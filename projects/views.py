@@ -1,19 +1,28 @@
-# views.py
-from django.shortcuts import render, redirect
-from .forms import ProyectoForm, ArchivoForm
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Proyecto, Archivo
+from .forms import ProyectoForm
 
-def crear_proyecto(request):
+def proyecto_lista(request):
+    proyectos = Proyecto.objects.all()
+    return render(request, 'projects/proyecto_list.html', {'proyectos': proyectos})
+
+def proyecto_detalle(request, pk):
+    proyecto = get_object_or_404(Proyecto, pk=pk)
+    return render(request, 'projects/proyecto_detail.html', {'proyecto': proyecto})
+
+def proyecto_crear(request):
     if request.method == 'POST':
-        proyecto_form = ProyectoForm(request.POST)
-        archivo_form = ArchivoForm(request.POST, request.FILES)
-        if proyecto_form.is_valid() and archivo_form.is_valid():
-            proyecto = proyecto_form.save()
-            archivos = request.FILES.getlist('archivo')
-            for archivo in archivos:
-                Archivo.objects.create(proyecto=proyecto, archivo=archivo)
-            return redirect('proyecto_detalle', pk=proyecto.pk)
+        form = ProyectoForm(request.POST)
+        archivos = request.FILES.getlist('archivos')
+        if form.is_valid():
+            proyecto = form.save()
+            for f in archivos:
+                proyecto.archivos.create(archivo=f)
+            return redirect('proyecto_lista')
     else:
-        proyecto_form = ProyectoForm()
-        archivo_form = ArchivoForm()
-    return render(request, 'crear_proyecto.html', {'proyecto_form': proyecto_form, 'archivo_form': archivo_form})
+        form = ProyectoForm()
+    return render(request, 'projects/proyecto_form.html', {'form': form})
+
+
+def home(request):
+    return render(request, 'projects/home.html')

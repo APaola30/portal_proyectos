@@ -1,0 +1,13 @@
+<h2>{{ proyecto.titulo }}</h2>
+<p>{{ proyecto.descripcion }}</p>
+
+<h3>Archivos:</h3>
+<ul>
+    {% for archivo in proyecto.archivos.all %}
+    <li><a href="{{ archivo.archivo.url }}">{{ archivo.archivo.name }}</a></li>
+    {% empty %}
+    <li>No hay archivos.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'proyecto_lista' %}">Volver a lista</a>
