@@ -1,20 +1,16 @@
+# forms.py
 from django import forms
-from .models import Project
+from .models import Proyecto, Archivo
 
-class ProjectForm(forms.ModelForm):
+class ProyectoForm(forms.ModelForm):
     class Meta:
-        model = Project
-        fields = ['title', 'description']
+        model = Proyecto
+        fields = ['titulo', 'descripcion']
 
-class ProjectFileForm(forms.Form):
-    files = forms.FileField(
-        widget=forms.ClearableFileInput(attrs={'multiple': True}),
-        required=True
-    )
-
-    def clean_files(self):
-        files = self.files.getlist('files')  # obtenemos todos los archivos
-        for f in files:
-            if not f.name.lower().endswith(('.jpg', '.jpeg', '.png', '.pdf')):
-                raise forms.ValidationError('Solo se permiten imágenes o PDFs.')
-        return files
+class ArchivoForm(forms.ModelForm):
+    class Meta:
+        model = Archivo
+        fields = ['archivo']
+        widgets = {
+            'archivo': forms.ClearableFileInput(attrs={'multiple': True})
+        }
