@@ -9,5 +9,10 @@
     <li>No hay archivos.</li>
     {% endfor %}
 </ul>
-
+<a href="{% url 'proyecto_eliminar' proyecto.pk %}">Eliminar</a>
+<br>
+<br>
+<a href="{% url 'proyecto_editar' proyecto.pk %}">Editar</a>
+<br>
+<br>
 <a href="{% url 'proyecto_lista' %}">Volver a lista</a>

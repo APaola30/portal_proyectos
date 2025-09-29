@@ -1,0 +1,41 @@
+<h2>Editar Proyecto: {{ proyecto.titulo }}</h2>
+
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ proyecto_form.as_p }}
+    
+    <label for="archivos">Subir nuevos archivos (opcional):</label>
+    <input type="file" name="archivos" multiple>
+    
+    <h3>Archivos existentes:</h3>
+<ul>
+    {% for archivo in proyecto.archivos.all %}
+    <li>
+        <a href="{{ archivo.archivo.url }}">{{ archivo.archivo.name }}</a>
+        <a href="{% url 'archivo_eliminar' archivo.pk %}" 
+           onclick="return confirm('¿Seguro que quieres eliminar este archivo?');">Eliminar</a>
+    </li>
+    {% empty %}
+    <li>No hay archivos.</li>
+    {% endfor %}
+</ul>
+
+    <button type="submit">Guardar cambios</button>
+</form>
+
+<a href="{% url 'proyecto_detalle' proyecto.pk %}">Cancelar</a>
