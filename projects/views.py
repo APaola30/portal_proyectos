@@ -48,8 +48,9 @@ def proyecto_eliminar(request, pk):
     proyecto = get_object_or_404(Proyecto, pk=pk)
     if request.method == "POST":
         proyecto.delete()
+        
         return redirect('proyecto_lista')
-    return render(request, 'projects/proyecto_confirm_delete.html', {'proyecto': proyecto})
+    return redirect('proyecto_detalle', pk=pk)
 
 def proyecto_editar(request, pk):
     proyecto = get_object_or_404(Proyecto, pk=pk)
@@ -85,7 +86,8 @@ def proyecto_editar(request, pk):
 
     return render(request, 'projects/proyecto_editar.html', {
         'proyecto_form': proyecto_form,
-        'proyecto': proyecto
+        'proyecto': proyecto,
+        'archivos': proyecto.archivos.all() 
     })
 
 
@@ -95,5 +97,6 @@ def archivo_eliminar(request, pk):
     archivo.delete()
     messages.success(request, "Archivo eliminado correctamente.")
     return redirect('proyecto_editar', pk=proyecto_pk)
+
 def home(request):
     return render(request, 'projects/home.html')

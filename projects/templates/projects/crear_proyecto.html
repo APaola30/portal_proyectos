@@ -1,7 +1,0 @@
-<!-- crear_proyecto.html -->
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ proyecto_form.as_p }}
-    {{ archivo_form.as_p }}
-    <button type="submit">Crear Proyecto</button>
-</form>

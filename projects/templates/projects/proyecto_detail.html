@@ -1,6 +1,5 @@
-<h2>{{ proyecto.titulo }}</h2>
+<h1>{{ proyecto.titulo }}</h1>
 <p>{{ proyecto.descripcion }}</p>
-
 <h3>Archivos:</h3>
 <ul>
     {% for archivo in proyecto.archivos.all %}
@@ -9,10 +8,24 @@
     <li>No hay archivos.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'proyecto_eliminar' proyecto.pk %}">Eliminar</a>
+<hr>
+<!-- Eliminar proyecto -->
+<form action="{% url 'proyecto_eliminar' proyecto.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger"
+        onclick="return confirm('¿Seguro que quieres eliminar este proyecto y todos sus archivos?');">
+        Eliminar proyecto
+    </button>
+</form>
+
+<!-- Botón editar -->
+<a href="{% url 'proyecto_editar' proyecto.pk %}" class="btn btn-primary">Editar</a>
+
+<!-- Botón regresar -->
+<a href="{% url 'proyecto_lista' %}" class="btn btn-secondary">Regresar</a>
+
+
+
+
 <br>
 <br>
-<a href="{% url 'proyecto_editar' proyecto.pk %}">Editar</a>
-<br>
-<br>
-<a href="{% url 'proyecto_lista' %}">Volver a lista</a>
